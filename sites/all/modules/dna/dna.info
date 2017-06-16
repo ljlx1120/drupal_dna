@@ -1,0 +1,5 @@
+name = dna
+description = dna module
+package = Custom
+core = 7.x
+files[] = dna.module

@@ -1,0 +1,62 @@
+<?php 
+	
+	function dna_menu(){
+		$items['dna'] = array(
+			'title' => 'DNA',
+			'page callback' => 'drupal_get_form',
+			'page arguments' => array('dna_form'),
+			'access callback' => TRUE,
+			'type' => MENU_NORMAL_ITEM,
+		);
+
+		$items['dna_result_page'] = array(
+			'title' => 'Result',
+			'page callback' => 'dna_result',
+			'access callback' => TRUE,
+			'type' => MENU_CALLBACK,
+		);
+		return $items;
+	}
+
+	function dna_form(){
+		$form['input'] = array(
+			'#title' => 'Enter phrase',
+			'#type' => 'textfield',
+			'#description' => t('Enter A T C or G, ex. T C G A...'),
+			'#element_validate' => array('element_validate_input'),
+			'#required' => TRUE,
+		);
+		$form['submit'] = array(
+			'#type' => 'submit',
+			'#value' => 'Submit',
+		);
+		return $form;
+	}
+
+	function element_validate_input($element){
+		if(!preg_match('/^[ACGTactg]+$/i', $element['#value'])){
+			form_error($element, t('only A/a C/c G/g T/t allowed'));
+		}
+	}
+
+	function dna_form_submit($form, &$form_state){
+		$one = ['A', 'C', 'T', 'G', 'a', 'c', 't', 'g'];
+		$two = ['T', 'G', 'A', 'C', 't', 'g', 'a', 'c'];
+		$string = $form_state['values']['input'];
+
+		$letters = str_split($string);
+		$result = array();
+		for ($i=0; $i < count($letters) ; $i++) { 
+			for ($j=0; $j < count($one); $j++) { 
+				if($letters[$i] == $one[$j]){
+					array_push($result, $two[$j]);
+				}
+			}
+		}
+		$_SESSION['output'] = join(' ', $result);
+		$form_state['redirect'] = 'dna_result_page';
+	}
+
+	function dna_result(){
+		return $_SESSION['output'];
+	}
