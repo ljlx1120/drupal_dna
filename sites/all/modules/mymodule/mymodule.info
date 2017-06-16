@@ -1,0 +1,5 @@
+name = My Ajax Node Loarder
+description = Display Nodes with Ajax
+package = Custom
+core = 7.x
+files[] = mymodule.module
