@@ -1,0 +1,46 @@
+<?php 
+	
+	class DnaTestCase extends DrupalUnitTestCase {
+
+		public static function getInfo(){
+			return array(
+				'name' => 'dna tests',
+				'description' => 'Test dna module',
+				'group' => 'module test',
+			);
+		}
+
+		function testDna(){
+			$description = 'a';
+			$input = 't';
+			$result = dna_transform($input);
+			$this->assertTrue($result, $description);
+
+			$description = 'A';
+			$input = 'T';
+			$result = dna_transform($input);
+			$this->assertTrue($result, $description);
+
+			$description = 'ac';
+			$input = 'tg';
+			$result = dna_transform($input);
+			$this->assertTrue($result, $description);
+
+			$description = 'AC';
+			$input = 'TG';
+			$result = dna_transform($input);
+			$this->assertTrue($result, $description);
+
+			$description = 'act';
+			$input = 'tga';
+			$result = dna_transform($input);
+			$this->assertTrue($result, $description);
+
+			$description = 'ACT';
+			$input = 'TGA';
+			$result = dna_transform($input);
+			$this->assertTrue($result, $description);
+		}
+		
+
+	}

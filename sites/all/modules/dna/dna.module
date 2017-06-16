@@ -40,11 +40,16 @@
 	}
 
 	function dna_form_submit($form, &$form_state){
+		$string = $form_state['values']['input'];
+		$result = dna_transform($string);
+		$_SESSION['output'] = $result;
+		$form_state['redirect'] = 'dna_result_page';
+	}
+
+	function dna_transform($input){
 		$one = ['A', 'C', 'T', 'G', 'a', 'c', 't', 'g'];
 		$two = ['T', 'G', 'A', 'C', 't', 'g', 'a', 'c'];
-		$string = $form_state['values']['input'];
-
-		$letters = str_split($string);
+		$letters = str_split($input);
 		$result = array();
 		for ($i=0; $i < count($letters) ; $i++) { 
 			for ($j=0; $j < count($one); $j++) { 
@@ -53,8 +58,8 @@
 				}
 			}
 		}
-		$_SESSION['output'] = join(' ', $result);
-		$form_state['redirect'] = 'dna_result_page';
+		$output = join(' ', $result);
+		return $output;
 	}
 
 	function dna_result(){
